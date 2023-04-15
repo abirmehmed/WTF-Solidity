@@ -3,22 +3,22 @@
 pragma solidity ^0.8.4;
 
 contract Bank {
-    mapping (address => uint256) public balanceOf;    // 余额mapping
+    mapping (address => uint256) public balanceOf;    // balance mapping
 
-    // 存入ether，并更新余额
+    // Deposit ether and update balance
     function deposit() external payable {
         balanceOf[msg.sender] += msg.value;
     }
 
-    // 提取msg.sender的全部ether
+    // Withdraw all ether of msg.sender
     function withdraw() external {
-        // 获取余额
+        // Get balance
         uint256 balance = balanceOf[msg.sender];
         require(balance > 0, "Insufficient balance");
-        // 转账 ether !!! 可能激活恶意合约的fallback/receive函数，有重入风险！
+        // Transfer ether!!! May activate the fallback/receive function of a malicious contract, with the risk of re-entry!
         (bool success, ) = msg.sender.call{value: balance}("");
         require(success, "Failed to send Ether");
-        // 更新余额
+        // Update balance
         balanceOf[msg.sender] = 0;
     }
 
