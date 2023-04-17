@@ -1,5 +1,5 @@
 ---
-title: S01. 重入攻击
+title: S01. reentrancy attack
 tags:
   - solidity
   - security
@@ -7,7 +7,7 @@ tags:
   - modifier
 ---
 
-# WTF Solidity 合约安全: S01. 重入攻击
+# WTF Solidity contract security:  S01. reentrancy attacks
 
 我最近在重新学solidity，巩固一下细节，也写一个“WTF Solidity极简入门”，供小白们使用（编程大佬可以另找教程），每周更新1-3讲。
 
