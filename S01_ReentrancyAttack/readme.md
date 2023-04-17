@@ -15,25 +15,25 @@ Twitter：[@0xAA_Science](https://twitter.com/0xAA_Science)
 
 community：[Discord](https://discord.gg/5akcruXrsk)｜[WeChat group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[official website WTF Academy](https://wtf.academy)
 
-所有代码和教程开源在github: [github.com/AmazingAng/WTFSolidity](https://github.com/AmazingAng/WTFSolidity)
+All code and tutorials are open source on GitHub : [github.com/AmazingAng/WTFSolidity](https://github.com/AmazingAng/WTFSolidity)
 
 -----
 
-这一讲，我们将介绍最常见的一种智能合约攻击-重入攻击，它曾导致以太坊分叉为 ETH 和 ETC（以太经典），并介绍如何避免它。
+In this lecture, we will introduce the most common type of smart contract attack - reentrancy attack, which once caused Ethereum to fork into ETH and ETC (Ethereum Classic), and explain how to avoid it.
 
-## 重入攻击
+##  reentrancy attacks 
 
-重入攻击是智能合约中最常见的一种攻击，攻击者通过合约漏洞（例如fallback函数）循环调用合约，将合约中资产转走或铸造大量代币。
+ Reentrancy attack is the most common type of attack on smart contracts, where attackers exploit contract vulnerabilities (such as fallback functions) to repeatedly call contracts, transfer assets out of contracts or mint a large number of tokens.
+ 
+some notable reentrancy attacks: 
 
-一些著名的重入攻击事件：
+-  In 2016, The DAO contract was attacked by reentrancy, hackers stole 3,600,000 ETH from the contract, and caused Ethereum to fork into `ETH `chain and `ETC` (Ethereum Classic) chain.
+- In 2019, synthetic asset platform Synthetix suffered a reentrancy attack and was stolen 3,700,000 `sETH`.
+- In 2020, lending platform Lendf.me suffered a reentrancy attack and was stolen $25,000,000.
+- In 2021, lending platform CREAM FINANCE suffered a reentrancy attack and was stolen $18,800,000.
+- In 2022, algorithmic stablecoin project Fei suffered a reentrancy attack and was stolen $80,000,000.
 
-- 2016年，The DAO合约被重入攻击，黑客盗走了合约中的 3,600,000 枚 `ETH`，并导致以太坊分叉为 `ETH` 链和 `ETC`（以太经典）链。
-- 2019年，合成资产平台 Synthetix 遭受重入攻击，被盗 3,700,000 枚 `sETH`。
-- 2020年，借贷平台 Lendf.me 遭受重入攻击，被盗 $25,000,000。
-- 2021年，借贷平台 CREAM FINANCE 遭受重入攻击，被盗 $18,800,000。
-- 2022年，算法稳定币项目 Fei 遭受重入攻击，被盗 $80,000,000。
-
-距离 The DAO 被重入攻击已经6年了，但每年还是会有几次因重入漏洞而损失千万美元的项目，因此理解这个漏洞非常重要。
+It has been six years since The DAO was attacked by reentrancy, but every year there are still a few projects that lose tens of millions of dollars due to reentrancy vulnerabilities, so understanding this vulnerability is very important.
 
 ## `0xAA` 抢银行的故事
 
