@@ -15,11 +15,11 @@ tags:
 
 community ：[Discord](https://discord.gg/5akcruXrsk)｜[WeChat group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[official website wtf.academy](https://wtf.academy)
 
-所有代码和教程开源在github: [github.com/AmazingAng/WTFSolidity](https://github.com/AmazingAng/WTFSolidity)
+all code and tutorials are open source github: [github.com/AmazingAng/WTFSolidity](https://github.com/AmazingAng/WTFSolidity)
 
 -----
 
-这一讲，我们将介绍选择器碰撞攻击，它是导致跨链桥 Poly Network 被黑的原因之一。在2021年8月，Poly Network在ETH，BSC，和Polygon上的跨链桥合约被盗，损失高达6.11亿美元（[总结](https://rekt.news/zh/polynetwork-rekt/)）。这是2021年最大的区块链黑客事件，也是历史被盗金额榜单上第2名，仅次于 Ronin 桥黑客事件。
+ In this lecture, we will introduce selector collision attack, which is one of the reasons why cross-chain bridge Poly Network was hacked. In August 2021, Poly Network’s cross-chain bridge contracts on ETH, BSC, and Polygon were stolen, resulting in a loss of up to $611 million ([summary] (https://rekt.news/zh/polynetwork-rekt/)）。This is the biggest blockchain hacking incident in 2021, and also the second on the historical stolen amount list, second only to Ronin Bridge hacking incident. 
 
 ## 选择器碰撞
 
