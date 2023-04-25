@@ -1,5 +1,5 @@
 ---
-title: S02. 选择器碰撞
+title: S02. selector collision
 tags:
   - solidity
   - security
@@ -7,13 +7,13 @@ tags:
   - abi encode
 ---
 
-# WTF Solidity 合约安全: S02. 选择器碰撞
+# WTF Solidity Contract Security: S02. Selector Collision
 
-我最近在重新学solidity，巩固一下细节，也写一个“WTF Solidity极简入门”，供小白们使用（编程大佬可以另找教程），每周更新1-3讲。
+ I recently relearned solidity, consolidated some details, and wrote a “WTF Solidity Simplified Introduction” for beginners (programming experts can find other tutorials), updated 1-3 lectures per week.
 
-推特：[@0xAA_Science](https://twitter.com/0xAA_Science)
+ Twitter：[@0xAA_Science](https://twitter.com/0xAA_Science)
 
-社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy)
+community ：[Discord](https://discord.gg/5akcruXrsk)｜[WeChat group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[official website wtf.academy](https://wtf.academy)
 
 所有代码和教程开源在github: [github.com/AmazingAng/WTFSolidity](https://github.com/AmazingAng/WTFSolidity)
 
