@@ -55,15 +55,15 @@ One day, hacker 0xAA came to the bank. This is his conversation with the robot t
 - 0xAA : Wait, I want to withdraw money, `1 ETH`.
 - ...
 
-最后，`0xAA`通过重入攻击的漏洞，把银行的资产搬空了，银行卒。
+In the end, `0xAA` exploited a vulnerability in the re-entry attack and emptied the bank’s assets. The bank died.
 
 ![](./img/S01-1.png)
 
-## 漏洞合约例子
+## Example of a vulnerable contract
 
-### 银行合约
+### Bank contract
 
-银行合约非常简单，包含`1`个状态变量`balanceOf`记录所有用户的以太坊余额；包含`3`个函数：
+The bank contract is very simple. It contains `1` state variable `balanceOf` that records the Ethereum balance of all users. It contains `3 `functions:
 - `deposit()`：存款函数，将`ETH`存入银行合约，并更新用户的余额。
 - `withdraw()`：提款函数，将调用者的余额转给它。具体步骤和上面故事中一样：查询余额，转账，更新余额。**注意：这个函数有重入漏洞！**
 - `getBalance()`：获取银行合约里的`ETH`余额。
