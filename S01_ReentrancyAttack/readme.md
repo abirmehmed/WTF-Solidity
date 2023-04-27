@@ -72,38 +72,38 @@ The bank contract is very simple. It contains `1` state variable `balanceOf` tha
 contract Bank {
     mapping (address => uint256) public balanceOf;    // 余额mapping
 
-    // 存入ether，并更新余额
+    // Deposit ether and update the balance.
     function deposit() external payable {
         balanceOf[msg.sender] += msg.value;
     }
 
-    // 提取msg.sender的全部ether
+    // Withdraw all ether from msg.sender.
     function withdraw() external {
-        uint256 balance = balanceOf[msg.sender]; // 获取余额
+        uint256 balance = balanceOf[msg.sender]; // get balance
         require(balance > 0, "Insufficient balance");
-        // 转账 ether !!! 可能激活恶意合约的fallback/receive函数，有重入风险！
+        //  translates to “Transfer ether!!! May activate the fallback/receive function of a malicious contract, with the risk of re-entry!
         (bool success, ) = msg.sender.call{value: balance}("");
         require(success, "Failed to send Ether");
-        // 更新余额
+        // update balance
         balanceOf[msg.sender] = 0;
     }
 
-    // 获取银行合约的余额
+    //get the balance of the bank contract
     function getBalance() external view returns (uint256) {
         return address(this).balance;
     }
 }
 ```
 
-### 攻击合约
+### attack contract
 
-重入攻击的一个攻击点就是合约转账`ETH`的地方：转账`ETH`的目标地址如果是合约，会触发对方合约的`fallback`（回退）函数，从而造成循环调用的可能。如果你不了解回退函数，可以阅读[WTF Solidity极简教程第19讲：接收ETH](https://github.com/AmazingAng/WTFSolidity/blob/main/19_Fallback/readme.md)。`Bank`合约在`withdraw()`函数中存在`ETH`转账：
+translates to “One attack point of a re-entry attack is the place where the contract transfers `ETH`: if the target address of the `ETH` transfer is a contract, it will trigger the `fallback` (fallback) function of the other party’s contract, thus causing the possibility of circular calls. If you don’t understand fallback functions, you can read [WTF Solidity Minimalist Tutorial Lecture 19: Receiving ETH](https://github.com/AmazingAng/WTFSolidity/blob/main/19_Fallback/readme.md)。`Bank`The contract has `ETH` transfer in the `withdraw()` function：
 
 ```
 (bool success, ) = msg.sender.call{value: balance}("");
 ```
 
-假如黑客在攻击合约中的`fallback()`或`receive()`函数中重新调用了`Bank`合约的`withdraw()`函数，就会造成`0xAA`抢银行故事中的循环调用，不断让`Bank`合约转账给攻击者，最终将合约的`ETH`提空。
+If a hacker re-calls the `withdraw()` function of the Bank contract in the `fallback()` or `receive()` function of the attack contract, it will cause a circular call in the` 0xAA` bank robbery story, constantly allowing the `Bank` contract to transfer money to the attacker, and finally emptying the contract’s `ETH`.
 
 ```solidity
     receive() external payable {
