@@ -70,7 +70,7 @@ The bank contract is very simple. It contains `1` state variable `balanceOf` tha
 
 ```solidity
 contract Bank {
-    mapping (address => uint256) public balanceOf;    // 余额mapping
+    mapping (address => uint256) public balanceOf;    // balance mapping
 
     // Deposit ether and update the balance.
     function deposit() external payable {
@@ -111,12 +111,12 @@ If a hacker re-calls the `withdraw()` function of the Bank contract in the `fall
     }
 ```
 
-下面我们看下攻击合约，它的逻辑非常简单，就是通过`receive()`回退函数循环调用`Bank`合约的`withdraw()`函数。它有`1`个状态变量`bank`用于记录`Bank`合约地址。它包含`4`个函数：
+Next, let’s take a look at the attack contract. Its logic is very simple. It uses the `receive()` fallback function to cyclically call the `withdraw()` function of the Bank contract. It has `1` state variable `bank` for recording the address of the `Bank` contract. It contains `4` functions:
 
-- 构造函数: 初始化`Bank`合约地址。
-- `receive()`: 回调函数，在接收`ETH`时被触发，并再次调用`Bank`合约的`withdraw()`函数，循环提款。
-- `attack()`：攻击函数，先`Bank`合约的`deposit()`函数存款，然后调用`withdraw()`发起第一次提款，之后`Bank`合约的`withdraw()`函数和攻击合约的`receive()`函数会循环调用，将`Bank`合约的`ETH`提空。
-- `getBalance()`：获取攻击合约里的`ETH`余额。
+- Constructor: Initialize the Bank contract address.
+- `receive()`: Callback function, triggered when receiving `ETH`, and calls the `withdraw()` function of the` Bank` contract again to withdraw money cyclically.
+- `attack()`：Attack function, first deposit money with the `deposit()` function of the Bank contract, then call `withdraw()` to initiate the first withdrawal. After that, the `withdraw()` function of the Bank contract and the `receive()` function of the attack contract will be called cyclically to empty the ETH of the Bank contract .
+- `getBalance()`：Get the `ETH` balance in the attack contract。
 
 ```solidity
 contract Attack {
