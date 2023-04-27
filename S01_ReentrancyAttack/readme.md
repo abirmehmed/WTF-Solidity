@@ -35,15 +35,15 @@ some notable reentrancy attacks:
 
 It has been six years since The DAO was attacked by reentrancy, but every year there are still a few projects that lose tens of millions of dollars due to reentrancy vulnerabilities, so understanding this vulnerability is very important.
 
-## `0xAA` 抢银行的故事
+## `0xAA` The story of robbing a bank
 
-为了让大家更好理解，这里给大家讲一个"黑客`0xAA`抢银行"的故事。
+In order to help everyone understand better, here is a story about ‘Hacker 0xAA robbing a bank’ for everyone.
 
-以太坊银行的柜员都是机器人（Robot），由智能合约控制。当正常用户（User）来银行取钱时，它的服务流程：
+The tellers at the Ethereum bank are all robots (Robot), controlled by smart contracts. When a normal user (User) comes to the bank to withdraw money, its service process is:
 
-1. 查询用户的 `ETH` 余额，如果大于0，进行下一步。
-2. 将用户的 `ETH` 余额从银行转给用户，并询问用户是否收到。
-3. 将用户名下的余额更新为`0`。
+1. Check the user’s `ETH` balance. If it is greater than `0`, proceed to the next step. 
+2. Transfer the user’s `ETH` balance from the bank to the user and ask if the user has received it. 
+3. Update the balance under the user’s name to `0`.
 
 一天黑客 `0xAA` 来到了银行，这是他和机器人柜员的对话：
 - 0xAA : 我要取钱，`1 ETH`。
