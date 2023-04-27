@@ -45,14 +45,14 @@ The tellers at the Ethereum bank are all robots (Robot), controlled by smart con
 2. Transfer the user’s `ETH` balance from the bank to the user and ask if the user has received it. 
 3. Update the balance under the user’s name to `0`.
 
-一天黑客 `0xAA` 来到了银行，这是他和机器人柜员的对话：
-- 0xAA : 我要取钱，`1 ETH`。
-- Robot: 正在查询您的余额：`1 ETH`。正在转帐`1 ETH`到您的账户。您收到钱了吗？
-- 0xAA : 等等，我要取钱，`1 ETH`。
-- Robot: 正在查询您的余额：`1 ETH`。正在转帐`1 ETH`到您的账户。您收到钱了吗？
-- 0xAA : 等等，我要取钱，`1 ETH`。
-- Robot: 正在查询您的余额：`1 ETH`。正在转帐`1 ETH`到您的账户。您收到钱了吗？
-- 0xAA : 等等，我要取钱，`1 ETH`。
+One day, hacker 0xAA came to the bank. This is his conversation with the robot teller:
+- 0xAA: I want to withdraw money, `1 ETH`.
+- Robot:Checking your balance: `1 ETH`. Transferring `1 ETH` to your account. Have you received the money?
+- 0xAA : Wait, I want to withdraw money, `1 ETH`。
+- Robot: Checking your balance: `1 ETH`. Transferring `1 ETH` to your account. Have you received the money?
+- 0xAA : Wait, I want to withdraw money, `1 ETH`.
+- Robot: Checking your balance: `1 ETH`. Transferring `1 ETH` to your account. Have you received the money?
+- 0xAA : Wait, I want to withdraw money, `1 ETH`.
 - ...
 
 最后，`0xAA`通过重入攻击的漏洞，把银行的资产搬空了，银行卒。
