@@ -64,9 +64,9 @@ In the end, `0xAA` exploited a vulnerability in the re-entry attack and emptied 
 ### Bank contract
 
 The bank contract is very simple. It contains `1` state variable `balanceOf` that records the Ethereum balance of all users. It contains `3 `functions:
-- `deposit()`：存款函数，将`ETH`存入银行合约，并更新用户的余额。
-- `withdraw()`：提款函数，将调用者的余额转给它。具体步骤和上面故事中一样：查询余额，转账，更新余额。**注意：这个函数有重入漏洞！**
-- `getBalance()`：获取银行合约里的`ETH`余额。
+- `deposit()`：Deposit function, deposit `ETH` into the bank contract and update the user’s balance.
+- `withdraw()`：Withdrawal function, transfer the caller’s balance to them. The specific steps are the same as in the story above: check balance, transfer, update balance.**Note: This function has a re-entry vulnerability.！**
+- `getBalance()`：Get the `ETH` balance in the bank contract
 
 ```solidity
 contract Bank {
