@@ -168,37 +168,40 @@ The checks-effects-interaction pattern emphasizes that when writing functions, y
 function withdraw() external {
     uint256 balance = balanceOf[msg.sender];
     require(balance > 0, "Insufficient balance");
-    // 检查-效果-交互模式（checks-effect-interaction）：先更新余额变化，再发送ETH
-    // 重入攻击的时候，balanceOf[msg.sender]已经被更新为0了，不能通过上面的检查。
+    // Checks-Effects-Interaction pattern (checks-effect-interaction): first update the balance change, then send ETH
+    // During a re-entrancy attack, balanceOf[msg.sender] has already been updated to 0 and cannot pass the above check.
     balanceOf[msg.sender] = 0;
     (bool success, ) = msg.sender.call{value: balance}("");
     require(success, "Failed to send Ether");
 }
 ```
 
-### 重入锁
+### Re-entrancy lock
 
-重入锁是一种防止重入函数的修饰器（modifier），它包含一个默认为`0`的状态变量`_status`。被`nonReentrant`重入锁修饰的函数，在第一次调用时会检查`_status`是否为`0`，紧接着将`_status`的值改为`1`，调用结束后才会再改为`0`。这样，当攻击合约在调用结束前第二次的调用就会报错，重入攻击失败。如果你不了解修饰器，可以阅读[WTF Solidity极简教程第11讲：修饰器](https://github.com/AmazingAng/WTFSolidity/blob/main/13_Modifier/readme.md)。
+重入锁是一种防止重入函数的修饰器（modifier），它包含一个默认为`0`的状态变量`_status`。被`nonReentrant`重入锁修饰的函数，在第一次调用时会检查`_status`是否为`0`，紧接着将`_status`的值改为`1`，调用结束后才会再改为`0`。这样，当攻击合约在调用结束前第二次的调用就会报错，重入攻击失败。如果你不了解修饰器，可以阅读[WTF Solidity极简教程第11讲：修饰器]
+
+A re-entrancy lock is a modifier that prevents re-entrant functions. It contains a state variable `_status`, which is `0` by default. Functions decorated with the `nonReentrant` re-entrancy lock will check whether `_status` is `0` when called for the first time, then change the value of `_status` to `1`, and only change it back to `0` after the call is over. In this way, when the attack contract calls for the second time before the call is over, it will report an error and the re-entrancy attack will fail. If you don’t understand modifiers, you can read [WTF Solidity Minimalist Tutorial Lecture 11: Modifiers]
+(https://github.com/AmazingAng/WTFSolidity/blob/main/13_Modifier/readme.md)。
 
 ```solidity
-uint256 private _status; // 重入锁
+uint256 private _status; // Re-entrancy lock
 
-// 重入锁
+// Re-entrancy lock
 modifier nonReentrant() {
-    // 在第一次调用 nonReentrant 时，_status 将是 0
+    // When calling nonReentrant for the first time, _status will be 0
     require(_status == 0, "ReentrancyGuard: reentrant call");
-    // 在此之后对 nonReentrant 的任何调用都将失败
+    // Any subsequent calls to nonReentrant will fail
     _status = 1;
     _;
-    // 调用结束，将 _status 恢复为0
+    // After the call is over, _status is restored to 0
     _status = 0;
 }
 ```
 
-只需要用`nonReentrant`重入锁修饰`withdraw()`函数，就可以预防重入攻击了。
+By using the `nonReentrant` reentrancy lock to modify the `withdraw()` function, reentrancy attacks can be prevented
 
 ```solidity
-// 用重入锁保护有漏洞的函数
+// Use a reentrancy lock to protect vulnerable functions.
 function withdraw() external nonReentrant{
     uint256 balance = balanceOf[msg.sender];
     require(balance > 0, "Insufficient balance");
@@ -210,6 +213,7 @@ function withdraw() external nonReentrant{
 }
 ```
 
-## 总结
+## Summary
 
-这一讲，我们介绍了以太坊最常见的一种攻击——重入攻击，并编了一个`0xAA`抢银行的小故事方便大家理解，最后我们介绍了两种预防重入攻击的办法：检查-影响-交互模式（checks-effect-interaction）和重入锁。在例子中，黑客利用了回退函数在目标合约进行`ETH`转账时进行重入攻击。实际业务中，`ERC721`和`ERC1155`的`safeTransfer()`和`safeTransferFrom()`安全转账函数，还有`ERC777`的回退函数，都可能会引发重入攻击。对于新手，我的建议是用重入锁保护所有可能改变合约状态的`external`函数，虽然可能会消耗更多的`gas`，但是可以预防更大的损失。
+
+In this lecture, we introduced the most common type of attack on Ethereum - the reentrancy attack - and wrote a small story about `0xAA` robbing a bank to help everyone understand. Finally, we introduced two ways to prevent reentrancy attacks: the checks-effects-interaction pattern and reentrancy locks. In the example, the hacker used the fallback function to carry out a reentrancy attack when the target contract was transferring `ETH`. In actual business, `ERC721` and `ERC1155`’s `safeTransfer(`) and `safeTransferFrom()` safe transfer functions, as well as `ERC777`’s fallback function, may all trigger reentrancy attacks. For beginners, my suggestion is to use a reentrancy lock to protect all `external` functions that may change the contract state. Although it may consume more `gas`, it can prevent greater losses
